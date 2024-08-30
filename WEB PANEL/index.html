@@ -1,4 +1,44 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Protected Page</title>
+    <style>
+        #passwordPrompt {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        #passwordForm {
+            text-align: center;
+        }
+        #mainContent {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Prompt -->
+    <div id="passwordPrompt">
+        <form id="passwordForm">
+            <h3>Please enter the password to access this page:</h3>
+            <input type="password" id="passwordInput" placeholder="Password" required />
+            <button type="submit">Submit</button>
+            <p id="error" style="color:red; display:none;">Incorrect password. Please try again.</p>
+        </form>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent">
 <html>
 <head>
 <title>AIRAVAT</title>
@@ -1134,5 +1174,37 @@ img[alt*="www.000webhost.com"], .disclaimer {
 display: none
 }  
 </style>
+</body>
+</html>
+        <h1>Welcome to the protected content!</h1>
+        <p>This is the content that users will see after entering the correct password.</p>
+    </div>
+
+    <script type="text/javascript">
+        const correctPassword = "yourPassword"; // Set your password here
+
+        // Check if the user has already entered the correct password
+        if (localStorage.getItem('authenticated') === 'true') {
+            document.getElementById('passwordPrompt').style.display = 'none'; // Hide the password prompt
+            document.getElementById('mainContent').style.display = 'block'; // Show the main content
+        }
+
+        document.getElementById('passwordForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
+
+            const enteredPassword = document.getElementById('passwordInput').value;
+            const error = document.getElementById('error');
+            const passwordPrompt = document.getElementById('passwordPrompt');
+            const mainContent = document.getElementById('mainContent');
+
+            if (enteredPassword === correctPassword) {
+                localStorage.setItem('authenticated', 'true'); // Store the authentication status
+                passwordPrompt.style.display = 'none'; // Hide the password prompt
+                mainContent.style.display = 'block'; // Show the main content
+            } else {
+                error.style.display = 'block'; // Show error message
+            }
+        });
+    </script>
 </body>
 </html>
